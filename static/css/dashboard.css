@@ -1,0 +1,10 @@
+/* Dashboard Page Styles */
+.logo-font {
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Custom styles for dashboard elements can be added here */
+.logs-container {
+    font-family: monospace;
+    font-size: 0.9rem;
+}
