@@ -9,8 +9,8 @@ def landing():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Here you would check credentials
-        # For now, just redirect to dashboard
+        # Here you would normally check the user's credentials.
+        # For now, just redirect to the dashboard after "login".
         return redirect(url_for('dashboard'))
     return render_template('login.html')
 
