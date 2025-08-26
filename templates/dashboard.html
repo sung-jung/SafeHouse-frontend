@@ -54,7 +54,8 @@
                 {% endif %}">
                 Register
             </a>
-            <a href="{{ url_for('login') }}"
+            <a href="#"
+                onclick="confirmLogout(event)"
                 class="block px-4 py-2 rounded-lg font-semibold
                 {% if request.endpoint == 'login' %}
                     bg-indigo-600 text-white
@@ -63,7 +64,8 @@
                 {% endif %}">
                 Login
             </a>
-            <a href="{{ url_for('logout') }}"
+            <a href="#"
+                onclick="confirmRealLogout(event)"
                 class="block px-4 py-2 rounded-lg font-semibold
                 {% if request.endpoint == 'logout' %}
                     bg-red-600 text-white
@@ -136,6 +138,20 @@
         menuBtn.addEventListener("click", () => {
             sidebar.classList.toggle("hidden");
         });
+
+        function confirmLogout(event) {
+            event.preventDefault();
+            if (confirm("Are you sure? This would log you out")) {
+                window.location.href = "{{ url_for('logout') }}";
+            }
+        }
+
+        function confirmRealLogout(event) {
+            event.preventDefault();
+            if (confirm("Log out?")) {
+                window.location.href = "{{ url_for('logout') }}";
+            }
+        }
     </script>
 </body>
 
