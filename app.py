@@ -1,24 +1,27 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Add this line if not already present
 
 @app.route('/')
 def landing():
-    return render_template('landing.html')
+    logged_in = 'user_id' in session
+    return render_template('landing.html', logged_in=logged_in)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Here you would normally check the user's credentials.
-        # For now, just redirect to the dashboard after "login".
+        # Simulate successful login
+        session['user_id'] = 1  # Set user_id in session
         return redirect(url_for('dashboard'))
     return render_template('login.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Handle registration logic here
-        return redirect(url_for('login'))
+        # Simulate successful registration
+        session['user_id'] = 1  # Set user_id in session
+        return redirect(url_for('dashboard'))
     return render_template('register.html')
 
 @app.route('/dashboard')
@@ -35,14 +38,18 @@ def upload_images():
     # Handle file upload here
     return redirect(url_for('dashboard'))
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    # If you have a profile.html, render it here
-    return render_template('profile.html') if 'profile.html' in app.jinja_loader.list_templates() else "Profile Settings Page"
+    user = {'username': 'YourName', 'email': 'your@email.com'}
+    if request.method == 'POST':
+        # Handle profile update logic here
+        return redirect(url_for('profile'))
+    return render_template('profile.html', user=user)
 
 @app.route('/logout')
 def logout():
-    return "Logged out"
+    session.pop('user_id', None)  # Log out the user
+    return redirect(url_for('landing'))
 
 if __name__ == '__main__':
     app.run(debug=True)

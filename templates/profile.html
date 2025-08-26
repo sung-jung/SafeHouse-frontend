@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Settings - Safehouse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen">
+    <div class="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-lg">
+        <!-- Back Button -->
+        <a href="{{ request.referrer or url_for('dashboard') }}"
+           class="inline-block mb-4 text-indigo-400 hover:text-indigo-200 font-semibold transition">&larr; Back</a>
+        <h2 class="text-3xl font-bold mb-6 text-center logo-font">Profile Settings</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <!-- Profile Picture -->
+            <div class="flex flex-col items-center mb-6">
+                <img src="{{ user.profile_pic if user.get('profile_pic') else url_for('static', filename='img/default-profile.png') }}"
+                     alt="Profile Picture"
+                     class="w-24 h-24 rounded-full mb-2 object-cover border-4 border-indigo-600">
+                <label class="block text-sm text-gray-400 mb-1" for="profile_pic">Change Profile Picture</label>
+                <input type="file" id="profile_pic" name="profile_pic" accept="image/*"
+                       class="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700"/>
+            </div>
+            <!-- Username -->
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold" for="username">Username</label>
+                <input class="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200 focus:outline-none" type="text" id="username" name="username" value="{{ user.username if user else '' }}">
+            </div>
+            <!-- Email -->
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold" for="email">Email</label>
+                <input class="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200 focus:outline-none" type="email" id="email" name="email" value="{{ user.email if user else '' }}">
+            </div>
+            <!-- Phone Number -->
+            <div class="mb-4">
+                <label class="block mb-2 font-semibold" for="phone">Phone Number</label>
+                <input class="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200 focus:outline-none" type="tel" id="phone" name="phone" value="{{ user.phone if user.get('phone') else '' }}">
+            </div>
+            <!-- Password -->
+            <div class="mb-6">
+                <label class="block mb-2 font-semibold" for="password">New Password</label>
+                <input class="w-full px-4 py-2 rounded-lg bg-gray-700 text-gray-200 focus:outline-none" type="password" id="password" name="password" placeholder="Leave blank to keep current">
+            </div>
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-lg transition">Save Changes</button>
+        </form>
+        <!-- Account Actions -->
+        <div class="mt-8 border-t border-gray-700 pt-6">
+            <h3 class="text-lg font-semibold mb-2">Account Actions</h3>
+            <button class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg transition mb-2">Delete Account</button>
+            <a href="{{ url_for('logout') }}" class="block text-center text-indigo-400 hover:underline mt-2">Logout</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -13,11 +13,11 @@
 
 <body class="bg-gray-900 text-gray-200 font-sans flex items-center justify-center min-h-screen">
   <!-- Register Card -->
-  <div class="bg-gray-800 p-10 rounded-2xl shadow-lg w-full max-w-md fade-in">
-    <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-white logo-font mb-2">Safehouse</h1>
-      <p class="text-gray-400">Create Your Account</p>
-    </div>
+  <div class="bg-gray-800 p-8 rounded-2xl shadow-lg w-full max-w-md">
+    <!-- Back Button -->
+    <a href="{{ request.referrer or url_for('landing') }}"
+       class="inline-block mb-4 text-indigo-400 hover:text-indigo-200 font-semibold transition">&larr; Back</a>
+    <h2 class="text-3xl font-bold mb-6 text-center logo-font">Create Account</h2>
     <form action="#" method="POST" class="space-y-6">
       <div>
         <label for="fullname" class="block text-sm font-medium mb-2">Full Name</label>
