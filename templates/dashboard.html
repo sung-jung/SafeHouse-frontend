@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safehouse Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900 text-gray-200 flex">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="sidebar fixed inset-y-0 left-0 w-64 bg-gray-800 shadow-lg p-6 hidden md:block transition-transform duration-300">
+        <h2 class="text-2xl font-bold text-white logo-font mb-2">Safehouse</h2>
+        <h3 class="text-lg text-gray-300 mb-6">Welcome, Admin</h3>
+        <nav class="space-y-2">
+            <a href="{{ url_for('landing') }}"
+                class="block px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'landing' %}
+                    bg-indigo-600 text-white
+                {% else %}
+                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
+                {% endif %}">
+                Home
+            </a>
+            <a href="{{ url_for('dashboard') }}"
+                class="block px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'dashboard' %}
+                    bg-indigo-600 text-white
+                {% else %}
+                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
+                {% endif %}">
+                Dashboard
+            </a>
+            <a href="{{ url_for('profile') }}"
+                class="block px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'profile' %}
+                    bg-indigo-600 text-white
+                {% else %}
+                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
+                {% endif %}">
+                Profile Settings
+            </a>
+            <a href="{{ url_for('register') }}"
+                class="block px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'register' %}
+                    bg-indigo-600 text-white
+                {% else %}
+                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
+                {% endif %}">
+                Register
+            </a>
+            <a href="{{ url_for('login') }}"
+                class="block px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'login' %}
+                    bg-indigo-600 text-white
+                {% else %}
+                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
+                {% endif %}">
+                Login
+            </a>
+            <a href="{{ url_for('logout') }}"
+                class="block px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'logout' %}
+                    bg-red-600 text-white
+                {% else %}
+                    hover:bg-gray-700 hover:text-red-400 text-gray-300
+                {% endif %}">
+                Logout
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main content -->
+    <div class="flex-1 p-6 md:ml-64">
+        <!-- Hamburger button (mobile) -->
+        <button id="menu-btn" class="md:hidden mb-4 px-4 py-2 bg-gray-700 rounded-lg text-gray-200 hover:bg-gray-600">
+            ☰ Menu
+        </button>
+
+        <!-- Upload Section -->
+        <section class="mb-10">
+            <h2 class="text-xl font-semibold mb-4">Upload 5 Training Images</h2>
+            <form action="{{ url_for('upload_images') }}" method="POST" enctype="multipart/form-data"
+                class="bg-gray-800 p-6 rounded-xl shadow-lg">
+                <input type="file" name="images" accept="image/*" multiple required
+                    class="block w-full text-gray-300 mb-4">
+                <button type="submit"
+                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold text-white">
+                    Upload
+                </button>
+                <p class="text-gray-400 mt-2 text-sm">Please upload exactly 5 images.</p>
+            </form>
+        </section>
+
+        <!-- Camera Feed -->
+        <section class="mb-10">
+            <h2 class="text-xl font-semibold mb-4">Live Camera Feed</h2>
+            <div class="bg-gray-800 p-4 rounded-xl shadow-lg flex justify-center">
+                <img src="{{ url_for('static', filename='images/placeholder-camera.jpg') }}" alt="Camera Feed"
+                    class="rounded-lg max-h-96">
+            </div>
+        </section>
+
+        <!-- Logs -->
+        <section>
+            <h2 class="text-xl font-semibold mb-4">Activity Logs</h2>
+            <div class="logs-container bg-gray-800 p-4 rounded-lg shadow-lg h-64 overflow-y-auto">
+                {% for log in logs %}
+                [{{ log.timestamp }}] {{ log.message }}
+                {% else %}
+                No logs available.
+                {% endfor %}
+            </div>
+
+            <!-- Door Control Buttons -->
+            <div class="flex justify-between mt-6">
+                <button class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-semibold text-white">
+                    Unlock Door
+                </button>
+                <button class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold text-white">
+                    Lock Door
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Sidebar toggle script -->
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const sidebar = document.getElementById("sidebar");
+        menuBtn.addEventListener("click", () => {
+            sidebar.classList.toggle("hidden");
+        });
+    </script>
+</body>
+
+</html>
