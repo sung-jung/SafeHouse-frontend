@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body class="bg-gray-900 text-gray-200 flex">
@@ -15,64 +17,52 @@
     <!-- Sidebar -->
     <aside id="sidebar"
         class="sidebar fixed inset-y-0 left-0 w-64 bg-gray-800 shadow-lg p-6 hidden md:block transition-transform duration-300">
-        <h2 class="text-2xl font-bold text-white logo-font mb-2">Safehouse</h2>
-        <h3 class="text-lg text-gray-300 mb-6">Welcome, Admin</h3>
+        <!-- Safehouse Title -->
+        <h2 class="text-3xl font-bold text-white logo-font mb-2 text-center animate-pulse" 
+            style="font-family: 'Orbitron', sans-serif;">
+            Safehouse
+        </h2>
+        <hr class="border-gray-700 mb-4">
+        <h3 class="text-lg text-gray-300 mb-6">Welcome, {{ current_user.username }}</h3>
+
         <nav class="space-y-2">
             <a href="{{ url_for('landing') }}"
-                class="block px-4 py-2 rounded-lg font-semibold
+                class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold
                 {% if request.endpoint == 'landing' %}
                     bg-indigo-600 text-white
                 {% else %}
                     hover:bg-gray-700 hover:text-indigo-400 text-gray-300
                 {% endif %}">
-                Home
+                <i data-lucide="home"></i> Home
             </a>
-            <a href="{{ url_for('dashboard') }}"
-                class="block px-4 py-2 rounded-lg font-semibold
-                {% if request.endpoint == 'dashboard' %}
+            <a href="{{ url_for('add_user') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold
+                {% if request.endpoint == 'add_user' %}
                     bg-indigo-600 text-white
                 {% else %}
                     hover:bg-gray-700 hover:text-indigo-400 text-gray-300
                 {% endif %}">
-                Dashboard
+                <i data-lucide="user-plus"></i> Add User
             </a>
             <a href="{{ url_for('profile') }}"
-                class="block px-4 py-2 rounded-lg font-semibold
+                class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold
                 {% if request.endpoint == 'profile' %}
                     bg-indigo-600 text-white
                 {% else %}
                     hover:bg-gray-700 hover:text-indigo-400 text-gray-300
                 {% endif %}">
-                Profile Settings
+                <i data-lucide="settings"></i> Profile Settings
             </a>
-            <a href="{{ url_for('register') }}"
-                class="block px-4 py-2 rounded-lg font-semibold
-                {% if request.endpoint == 'register' %}
-                    bg-indigo-600 text-white
-                {% else %}
-                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
-                {% endif %}">
-                Register
-            </a>
+            <!-- Logout Button -->
             <a href="#"
                 onclick="confirmLogout(event)"
-                class="block px-4 py-2 rounded-lg font-semibold
-                {% if request.endpoint == 'login' %}
-                    bg-indigo-600 text-white
-                {% else %}
-                    hover:bg-gray-700 hover:text-indigo-400 text-gray-300
-                {% endif %}">
-                Login
-            </a>
-            <a href="#"
-                onclick="confirmRealLogout(event)"
-                class="block px-4 py-2 rounded-lg font-semibold
+                class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold
                 {% if request.endpoint == 'logout' %}
                     bg-red-600 text-white
                 {% else %}
                     hover:bg-gray-700 hover:text-red-400 text-gray-300
                 {% endif %}">
-                Logout
+                <i data-lucide="log-out"></i> Logout
             </a>
         </nav>
     </aside>
@@ -83,21 +73,6 @@
         <button id="menu-btn" class="md:hidden mb-4 px-4 py-2 bg-gray-700 rounded-lg text-gray-200 hover:bg-gray-600">
             ☰ Menu
         </button>
-
-        <!-- Upload Section -->
-        <section class="mb-10">
-            <h2 class="text-xl font-semibold mb-4">Upload 5 Training Images</h2>
-            <form action="{{ url_for('upload_images') }}" method="POST" enctype="multipart/form-data"
-                class="bg-gray-800 p-6 rounded-xl shadow-lg">
-                <input type="file" name="images" accept="image/*" multiple required
-                    class="block w-full text-gray-300 mb-4">
-                <button type="submit"
-                    class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-semibold text-white">
-                    Upload
-                </button>
-                <p class="text-gray-400 mt-2 text-sm">Please upload exactly 5 images.</p>
-            </form>
-        </section>
 
         <!-- Camera Feed -->
         <section class="mb-10">
@@ -121,17 +96,21 @@
 
             <!-- Door Control Buttons -->
             <div class="flex justify-between mt-6">
-                <button class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-semibold text-white">
+                <button
+                    class="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-lg font-semibold text-white 
+                           shadow-md hover:shadow-lg transform hover:scale-105 transition duration-200">
                     Unlock Door
                 </button>
-                <button class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold text-white">
+                <button
+                    class="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-semibold text-white 
+                           shadow-md hover:shadow-lg transform hover:scale-105 transition duration-200">
                     Lock Door
                 </button>
             </div>
         </section>
     </div>
 
-    <!-- Sidebar toggle script -->
+    <!-- Sidebar toggle + Logout confirm -->
     <script>
         const menuBtn = document.getElementById("menu-btn");
         const sidebar = document.getElementById("sidebar");
@@ -141,17 +120,13 @@
 
         function confirmLogout(event) {
             event.preventDefault();
-            if (confirm("Are you sure? This would log you out")) {
+            if (confirm("Are you sure you want to log out?")) {
                 window.location.href = "{{ url_for('logout') }}";
             }
         }
 
-        function confirmRealLogout(event) {
-            event.preventDefault();
-            if (confirm("Log out?")) {
-                window.location.href = "{{ url_for('logout') }}";
-            }
-        }
+        // Initialize Lucide icons
+        lucide.createIcons();
     </script>
 </body>
 
